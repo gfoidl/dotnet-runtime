@@ -448,7 +448,9 @@ namespace System.Net.Sockets
             }
 
             // Prepare for and make the native call.
-            e.StartOperationCommon(this, SocketAsyncOperation.SendFile);
+            // Since the SocketAsyncEventArgs-based overload is not exposed publicly, we use
+            // Send for the async operation as a workaround.
+            e.StartOperationCommon(this, SocketAsyncOperation.Send);
             SocketError socketError;
             try
             {

@@ -446,7 +446,6 @@ namespace System.Net.Sockets
         Send = 7,
         SendPackets = 8,
         SendTo = 9,
-        SendFile = 10,
     }
     [System.FlagsAttribute]
     public enum SocketFlags
