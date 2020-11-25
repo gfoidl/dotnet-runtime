@@ -269,16 +269,8 @@ namespace System.Net.Sockets
             if (errorCode != SocketError.Success)
             {
                 UpdateSendSocketErrorForDisposed(ref errorCode);
-
-                if (errorCode == SocketError.OperationAborted)
-                {
-                    // Don't wrap into a SocketException
-                    throw new OperationCanceledException(cancellationToken);
-                }
-                else
-                {
-                    UpdateStatusAfterSocketErrorAndThrowException(errorCode);
-                }
+                cancellationToken.ThrowIfCancellationRequested();
+                UpdateStatusAfterSocketErrorAndThrowException(errorCode);
             }
 
             // Send the postBuffer, if any
