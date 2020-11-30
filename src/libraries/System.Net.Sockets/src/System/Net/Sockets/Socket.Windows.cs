@@ -567,7 +567,7 @@ namespace System.Net.Sockets
                 }
             }
 
-            public void GetResult(short token)
+            void IValueTaskSource.GetResult(short token)
             {
                 _mrvtsc.GetResult(token);
 
@@ -582,10 +582,10 @@ namespace System.Net.Sockets
                 }
             }
 
-            public ValueTaskSourceStatus GetStatus(short token) => _mrvtsc.GetStatus(token);
-            public void OnCompleted(Action<object?> continuation, object? state, short token, ValueTaskSourceOnCompletedFlags flags) => _mrvtsc.OnCompleted(continuation, state, token, flags);
+            ValueTaskSourceStatus IValueTaskSource.GetStatus(short token) => _mrvtsc.GetStatus(token);
+            void IValueTaskSource.OnCompleted(Action<object?> continuation, object? state, short token, ValueTaskSourceOnCompletedFlags flags) => _mrvtsc.OnCompleted(continuation, state, token, flags);
 
-            protected override void OnCompleted(SocketAsyncEventArgs e) => _mrvtsc.SetResult(true);
+            protected override void OnCompleted(SocketAsyncEventArgs _) => _mrvtsc.SetResult(true);
 
             private unsafe SocketError ProcessIOFileSendResult(SocketError socketError, NativeOverlapped* overlapped, CancellationToken cancellationToken)
             {
