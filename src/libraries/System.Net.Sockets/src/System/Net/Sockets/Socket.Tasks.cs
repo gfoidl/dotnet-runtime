@@ -462,6 +462,52 @@ namespace System.Net.Sockets
         }
 
         /// <summary>
+        /// Sends the file <paramref name="fileName"/> to a connected <see cref="Socket"/> object.
+        /// </summary>
+        /// <param name="fileName">
+        /// A <see cref="string"/> that contains the path and name of the file to be sent. This parameter can be <see langword="null"/>.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// A cancellation token that can be used to signal the asynchronous operation should be canceled.
+        /// </param>
+        /// <exception cref="ObjectDisposedException">The <see cref="Socket"/> object has been closed.</exception>
+        /// <exception cref="NotSupportedException">The <see cref="Socket"/> object is not connected to a remote host.</exception>
+        /// <exception cref="FileNotFoundException">The file <paramref name="fileName"/> was not found.</exception>
+        /// <exception cref="SocketException">An error occurred when attempting to access the socket.</exception>
+        public ValueTask SendFileAsync(string? fileName, CancellationToken cancellationToken = default)
+        {
+            return SendFileAsync(fileName, default, default, TransmitFileOptions.UseDefaultWorkerThread, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sends the file <paramref name="fileName"/> and buffers of data to a connected <see cref="Socket"/> object
+        /// using the specified <see cref="TransmitFileOptions"/> value.
+        /// </summary>
+        /// <param name="fileName">
+        /// A <see cref="string"/> that contains the path and name of the file to be sent. This parameter can be <see langword="null"/>.
+        /// </param>
+        /// <param name="preBuffer">
+        /// A <see cref="ReadOnlyMemory{T}"/> that contains data to be sent before the file is sent. This buffer can be empty.
+        /// </param>
+        /// <param name="postBuffer">
+        /// A <see cref="ReadOnlyMemory{T}"/> that contains data to be sent after the file is sent. This buffer can be empty.
+        /// </param>
+        /// <param name="flags">
+        /// One or more of <see cref="TransmitFileOptions"/> values.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// A cancellation token that can be used to signal the asynchronous operation should be canceled.
+        /// </param>
+        /// <exception cref="ObjectDisposedException">The <see cref="Socket"/> object has been closed.</exception>
+        /// <exception cref="NotSupportedException">The <see cref="Socket"/> object is not connected to a remote host.</exception>
+        /// <exception cref="FileNotFoundException">The file <paramref name="fileName"/> was not found.</exception>
+        /// <exception cref="SocketException">An error occurred when attempting to access the socket.</exception>
+        public ValueTask SendFileAsync(string? fileName, ReadOnlyMemory<byte> preBuffer, ReadOnlyMemory<byte> postBuffer, TransmitFileOptions flags, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Sends data to the specified remote host.
         /// </summary>
         /// <param name="buffer">The buffer for the data to send.</param>
