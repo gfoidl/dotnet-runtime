@@ -504,7 +504,22 @@ namespace System.Net.Sockets
         /// <exception cref="SocketException">An error occurred when attempting to access the socket.</exception>
         public ValueTask SendFileAsync(string? fileName, ReadOnlyMemory<byte> preBuffer, ReadOnlyMemory<byte> postBuffer, TransmitFileOptions flags, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+
+            if (!Connected)
+            {
+                throw new NotSupportedException(SR.net_notconnected);
+            }
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return ValueTask.FromCanceled(cancellationToken);
+            }
+
+            if (NetEventSource.Log.IsEnabled()) NetEventSource.Info(this, $"::SendFileAsync() SRC:{LocalEndPoint} DST:{RemoteEndPoint} fileName:{fileName}");
+
+            FileStream? fileStream = OpenFile(fileName);
+            return SendFileInternalAsync(fileStream, preBuffer, postBuffer, flags, cancellationToken);
         }
 
         /// <summary>
